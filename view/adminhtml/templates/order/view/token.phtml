@@ -1,0 +1,78 @@
+<?php
+		$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+		$resource = $objectManager->get('Magento\Framework\App\ResourceConnection');
+		$ScopeConfig = $objectManager->get('Magento\Framework\App\Config\ScopeConfigInterface');
+		$refundactive =$ScopeConfig->getValue('payment/paymepayment/refund', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+        $coreWrite = $resource->getConnection();
+        $tableName = $resource->getTableName('sun_payme_history');
+
+        $selectSql = "select * from `".$tableName."` where order_id='".$this->getOrder()->getRealOrderId()."' ";
+        $rows = $coreWrite->fetchAll($selectSql);
+		
+?>
+
+<?php if (!empty($rows)): ?>
+    <div class="admin__page-section-item-title" style="margin-top: 1.5rem;">
+        <span class="title"><?php echo __("Payme Info")?></span>
+    </div>
+    <table class="data-table admin__table-secondary" style="border:1px solid #ccc">
+		<?php 
+		$refuned=false;$transaction_value='';
+		foreach($rows as $row){
+		if($row['status']=='SUCCESS'){
+					$transaction_value=$row['transaction_value'];
+				}
+		?>
+        <tr>
+            <th><?php echo __('Transaction:')?></th>
+            <td>
+                <?php
+                /* @noEscape */
+                
+				if($row['status']=='REFUNDED'){
+					$refuned=true;
+				}
+                echo $row['transaction_value'].'<br><b>'.($row['status']).'</b> '.($row['create_time']);
+				
+				?>
+				
+            </td>
+        </tr>
+		<?php
+		}
+		if(!$refuned && $refundactive){
+			//echo '<tr><th><button class="" onclick="return refund()">Refund</button></th><td></td></tr>';
+		}
+		?>
+		
+    </table>
+	<div id="returnmsg" style="background: #f8f3b2;padding:10px;display:none"></div>
+<script>
+		
+	function getAjax() {     
+		var oHttpReq = null;  if(window.ActiveXObject)  oHttpReq = new ActiveXObject("MSXML2.XMLHTTP");     else if(window.createRequest)  oHttpReq = window.createRequest(); else  oHttpReq = new XMLHttpRequest();return oHttpReq;
+	}  
+	
+	function refund(){
+		if(confirm("<?php echo __("Confirm to Refund?")?>")){
+		document.getElementById('returnmsg').innerHTML="Refund in processing";
+		document.getElementById('returnmsg').style.display='block';
+		var url="<?php 
+		$storeManager = $objectManager->get('\Magento\Store\Model\StoreManagerInterface');
+		$baseurl=$storeManager->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_WEB);
+		
+		echo $baseurl.'/payme/process/scanevent?action=refund&transaction_value='.$transaction_value.'&amount='.round($this->getOrder()->getGrandTotal(),2).'&orderId='.$this->getOrder()->getRealOrderId();?>"; 
+		var req = getAjax();  
+		req.open("GET", url, true);
+		req.onreadystatechange = function(){ 
+		  if(req.readyState==4){  
+		 	var rdata=req.responseText;
+			document.getElementById('returnmsg').innerHTML=rdata;
+		 }  
+		}; 
+		req.send(null);
+		}
+		return false;
+	}
+</script>
+<?php endif;?>

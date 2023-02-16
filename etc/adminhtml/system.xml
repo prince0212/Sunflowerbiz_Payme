@@ -1,0 +1,95 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../Config/etc/system_file.xsd">
+    <system>
+        <section id="payment">
+            <group id="paymepayment" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+			   
+                <label>Payme Payment</label>
+                <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="title" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Title</label>
+                </field>
+				
+				
+                        <field id="client_id" translate="label" sortOrder="30" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Client ID</label>
+							
+                        </field>
+						
+						<field id="client_secret" translate="label" sortOrder="42" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Client Secret</label>
+							
+                        </field>
+							
+						<field id="signing_keyid" translate="label" sortOrder="44" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Signing Key Id</label>
+							
+                        </field>
+								
+						<field id="signing_key" translate="label" sortOrder="44" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Signing Key</label>
+							
+                        </field>
+						
+						<field id="sandbox_mode" translate="label" sortOrder="50" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Sandbox Mode</label>
+                   			 <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        </field>
+						
+						<field id="refund" translate="label" sortOrder="55" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Allow Refund</label>
+                   			 <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+							 <comment><![CDATA[After enabling it, the transcation can be refunded in order management page.]]></comment>
+                        </field>
+						
+						
+						<field id="logo" translate="label" sortOrder="58" type="image" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Merchant Logo</label>
+                   			<comment>Allowed file types: jpg, jpeg, gif, png</comment>
+							<backend_model>Sunflowerbiz\Payme\Model\Saveimage</backend_model>
+							<base_url type="media" scope_info="1">sunflowerbiz/payme</base_url>
+                        </field>
+						
+						
+					
+						<field id="enable_log" translate="label" type="select" showInDefault="1" sortOrder="60" showInWebsite="1" showInStore="1">
+                            <label>Enable Log</label>
+                       		 <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+							<comment><![CDATA[When enable log, all transcation will be logged in /var/log/PaymeScanPay.log]]></comment>
+                        </field>
+						
+				
+    
+				 <field id="order_status_payment_accepted" translate="label" type="select" sortOrder="61" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Order status when payment accepted by Payme</label>
+                            <source_model>Magento\Sales\Model\Config\Source\Order\Status\Processing</source_model>
+                        </field>
+						
+						
+                <field id="allowspecific" translate="label" type="allowspecific" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Payment from Applicable Countries</label>
+                    <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
+                </field>
+                <field id="specificcountry" translate="label" type="multiselect" sortOrder="71" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Payment from Specific Countries</label>
+                    <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
+                    <can_be_empty>1</can_be_empty>
+                </field>
+           
+                <field id="sort_order" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Sort Order</label>
+                    <frontend_class>validate-number</frontend_class>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

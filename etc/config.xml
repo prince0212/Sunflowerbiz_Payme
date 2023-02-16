@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../Store/etc/config.xsd">
+    <default>
+        <payment>
+            <paymepayment>
+                <active>0</active>
+				 <title>Payme</title>
+				  <enable_log>0</enable_log>
+				   <allowspecific>0</allowspecific>
+                <order_status_payment_refuned></order_status_payment_refuned>
+                <order_status_payment_accepted>processing</order_status_payment_accepted>
+                <payment_action>true</payment_action>
+                <model>Sunflowerbiz\Payme\Model\PaymePayment</model>
+                <group>offline</group>
+            </paymepayment>
+        </payment>
+    </default>
+</config>
